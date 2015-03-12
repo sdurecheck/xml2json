@@ -13,7 +13,7 @@ class SimplisticTest(unittest.TestCase):
         global xmlstring, options
         filename = os.path.join(os.path.dirname(__file__), 'xml_ns2.xml')
         xmlstring = open(filename).read()
-        options = optparse.Values({"pretty": False})
+        options = optparse.Values({"pretty": True})
 
     def test_default_namespace_attribute(self):
         strip_ns = 0
@@ -42,6 +42,26 @@ class SimplisticTest(unittest.TestCase):
         #print json_data["root"]["table"][0]["tr"]
         self.assertTrue("table" in json_data["root"])
         self.assertEqual(json_data["root"]["table"][0]["tr"]["td"] , ["Apples", "Bananas"])
+        
+    def test_main(self):
+        json_string = xml2json.main()
+        
+    def test_json2(self):
+        json_data = '{"dict":{"@":"1","#text":"1","#tail":"2","first":["second","three"],"a":"1"}}'
+        xml_string = xml2json.json2xml(json_data)
+
+    def test_json2_raise(self):
+        json_data = '{"a":"1","b":"1"}'
+        xml_string = xml2json.json2xml(json_data)
+
+    def test_elem2json(self):
+        strip_ns = 0
+        options = optparse.Values({"pretty": False})
+        json_string = xml2json.xml2json(xmlstring,options,strip_ns)
+
+    def test_json2elem(self):
+        json_data = '{"a":"1","b":"1"}'
+        json_string = xml2json.json2elem(json_data)
 
 if __name__ == '__main__':
     unittest.main()
